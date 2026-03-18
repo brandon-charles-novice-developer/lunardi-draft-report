@@ -1,0 +1,148 @@
+import { useCallback, useMemo } from 'react';
+import useScrollSpy from './hooks/useScrollSpy';
+import useMediaQuery from './hooks/useMediaQuery';
+import Sidebar from './components/layout/Sidebar';
+import MobileNav from './components/layout/MobileNav';
+import HeroSection from './components/hero/HeroSection';
+import LeaderboardTable from './components/rankings/LeaderboardTable';
+import ManagerCard from './components/rankings/ManagerCard';
+import ConflictMap from './components/bracket/ConflictMap';
+import TeamProjections from './components/appendix/TeamProjections';
+import InjuryReport from './components/appendix/InjuryReport';
+import SectionDivider from './components/ui/SectionDivider';
+import GlassCard from './components/ui/GlassCard';
+import { managers } from './data/managers';
+import { r64Conflicts, r2Conflicts } from './data/conflicts';
+import { teamProjections } from './data/projections';
+import { injuries } from './data/injuries';
+import { fantasyFinalFour } from './data/finalFour';
+
+function App() {
+  const sectionIds = useMemo(
+    () => [
+      'overview',
+      'leaderboard',
+      ...managers.map((m) => m.cardId),
+      'final-four',
+      'conflicts',
+      'projections',
+      'injuries',
+    ],
+    []
+  );
+
+  const activeSection = useScrollSpy(sectionIds);
+  const isMobile = useMediaQuery('(max-width: 767px)');
+
+  const handleNavigate = useCallback((id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-bg-primary">
+      {!isMobile && (
+        <Sidebar activeSection={activeSection} onNavigate={handleNavigate} />
+      )}
+      {isMobile && (
+        <MobileNav activeSection={activeSection} onNavigate={handleNavigate} />
+      )}
+
+      <main className={`${isMobile ? 'pb-20' : 'ml-[240px]'}`}>
+        <HeroSection />
+
+        <div className="max-w-5xl mx-auto px-4 md:px-8 py-12 space-y-12">
+          <LeaderboardTable
+            managers={managers}
+            onSelectManager={handleNavigate}
+          />
+
+          <SectionDivider />
+
+          <div className="space-y-10">
+            {managers
+              .slice()
+              .sort((a, b) => b.rank - a.rank)
+              .map((manager) => (
+                <ManagerCard key={manager.cardId} manager={manager} />
+              ))}
+          </div>
+
+          <SectionDivider />
+
+          {/* Final Four of Fantasy */}
+          <section id="final-four" className="space-y-6">
+            <h2 className="font-display text-3xl md:text-4xl gradient-text tracking-tight">
+              THE FINAL FOUR OF FANTASY
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {fantasyFinalFour.map((tier) => (
+                <GlassCard key={tier.tier} level="medium" className="p-6">
+                  <h3 className="font-display text-xl text-accent-pink mb-3">
+                    {tier.tier}
+                  </h3>
+                  <ul className="space-y-2">
+                    {tier.managers.map((m) => (
+                      <li key={m.name} className="text-sm">
+                        <span className="text-text-primary font-semibold">
+                          {m.name}
+                        </span>
+                        <span className="text-text-secondary"> — {m.summary}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </GlassCard>
+              ))}
+            </div>
+          </section>
+
+          <SectionDivider />
+
+          {/* Appendix */}
+          <section className="space-y-10">
+            <h2 className="font-display text-3xl md:text-4xl gradient-text tracking-tight">
+              APPENDIX
+            </h2>
+            <ConflictMap r64Conflicts={r64Conflicts} r2Conflicts={r2Conflicts} />
+            <TeamProjections projections={teamProjections} />
+            <InjuryReport injuries={injuries} />
+
+            <GlassCard level="light" className="p-6">
+              <h3 className="font-display text-xl text-accent-purple mb-3">
+                METHODOLOGY
+              </h3>
+              <p className="text-text-secondary text-sm leading-relaxed font-body">
+                <strong className="text-text-primary">PTP = PPG × Expected Games Played.</strong>{' '}
+                Expected Games = Team Expected Wins + 1. Expected wins sourced from
+                TeamRankings 10K-simulation composite blended with Nate Silver COOPER
+                model and KenPom qualitative adjustments. Momentum flags (HOT,
+                CONSISTENT) noted qualitatively. Injury deductions applied where
+                status is QUESTIONABLE or worse. Head-to-head conflicts mapped across
+                all four regions.
+              </p>
+              <p className="text-text-secondary text-sm leading-relaxed font-body mt-3">
+                <strong className="text-text-primary">Sources:</strong> KenPom,
+                TeamRankings.com, Nate Silver COOPER/Silver Bulletin, ESPN BPI, Jay
+                Bilas (ESPN), CBS SportsLine, Covers.com, DraftKings, FanDuel,
+                RotoWire, SI.com, SportsBettingDime, FOX Sports, Bleacher Report,
+                Yahoo Sports, NBC Sports, The Ringer, Neil Paine Substack.
+              </p>
+            </GlassCard>
+          </section>
+
+          {/* Footer */}
+          <footer className="text-center py-12 text-text-secondary text-sm">
+            <p className="gradient-text font-display text-lg mb-2">
+              — Homoe Lunardi, Draft Analyst, Bracketologist, Icon
+            </p>
+            <p>March 17, 2026 — Tournament Eve</p>
+          </footer>
+        </div>
+      </main>
+    </div>
+  );
+}
+
+export default App;
