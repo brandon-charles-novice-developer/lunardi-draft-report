@@ -4,6 +4,7 @@ import useMediaQuery from './hooks/useMediaQuery';
 import Sidebar from './components/layout/Sidebar';
 import MobileNav from './components/layout/MobileNav';
 import HeroSection from './components/hero/HeroSection';
+import MyRosterSpotlight from './components/roster/MyRosterSpotlight';
 import LeaderboardTable from './components/rankings/LeaderboardTable';
 import ManagerCard from './components/rankings/ManagerCard';
 import ConflictMap from './components/bracket/ConflictMap';
@@ -18,9 +19,13 @@ import { injuries } from './data/injuries';
 import { fantasyFinalFour } from './data/finalFour';
 
 function App() {
+  const myRoster = managers.find((m) => m.rank === 1)!;
+  const opponents = managers.filter((m) => m.rank !== 1);
+
   const sectionIds = useMemo(
     () => [
       'overview',
+      'my-roster',
       'leaderboard',
       ...managers.map((m) => m.cardId),
       'final-four',
@@ -53,7 +58,22 @@ function App() {
       <main className={`${isMobile ? 'pb-20' : 'ml-[240px]'}`}>
         <HeroSection />
 
+        {/* Brandon's Roster — THE CENTERPIECE */}
+        <MyRosterSpotlight manager={myRoster} />
+
         <div className="max-w-5xl mx-auto px-4 md:px-8 py-12 space-y-12">
+          <SectionDivider />
+
+          {/* Competition Section Header */}
+          <div className="text-center">
+            <h2 className="font-display text-3xl md:text-4xl gradient-text tracking-tight mb-2">
+              THE COMPETITION
+            </h2>
+            <p className="text-text-secondary font-body italic">
+              How the other 9 rosters stack up — ranked and roasted by Homoe Lunardi
+            </p>
+          </div>
+
           <LeaderboardTable
             managers={managers}
             onSelectManager={handleNavigate}
@@ -61,13 +81,15 @@ function App() {
 
           <SectionDivider />
 
+          {/* Manager Cards — #10 through #1 */}
           <div className="space-y-10">
-            {managers
-              .slice()
+            {[...opponents]
               .sort((a, b) => b.rank - a.rank)
               .map((manager) => (
                 <ManagerCard key={manager.cardId} manager={manager} />
               ))}
+            {/* Brandon's card last — the #1 reveal */}
+            <ManagerCard manager={myRoster} />
           </div>
 
           <SectionDivider />
@@ -89,7 +111,10 @@ function App() {
                         <span className="text-text-primary font-semibold">
                           {m.name}
                         </span>
-                        <span className="text-text-secondary"> — {m.summary}</span>
+                        <span className="text-text-secondary">
+                          {' '}
+                          — {m.summary}
+                        </span>
                       </li>
                     ))}
                   </ul>
@@ -114,20 +139,23 @@ function App() {
                 METHODOLOGY
               </h3>
               <p className="text-text-secondary text-sm leading-relaxed font-body">
-                <strong className="text-text-primary">PTP = PPG × Expected Games Played.</strong>{' '}
-                Expected Games = Team Expected Wins + 1. Expected wins sourced from
-                TeamRankings 10K-simulation composite blended with Nate Silver COOPER
-                model and KenPom qualitative adjustments. Momentum flags (HOT,
-                CONSISTENT) noted qualitatively. Injury deductions applied where
-                status is QUESTIONABLE or worse. Head-to-head conflicts mapped across
-                all four regions.
+                <strong className="text-text-primary">
+                  PTP = PPG × Expected Games Played.
+                </strong>{' '}
+                Expected Games = Team Expected Wins + 1. Expected wins sourced
+                from TeamRankings 10K-simulation composite blended with Nate
+                Silver COOPER model and KenPom qualitative adjustments. Momentum
+                flags (HOT, CONSISTENT) noted qualitatively. Injury deductions
+                applied where status is QUESTIONABLE or worse. Head-to-head
+                conflicts mapped across all four regions.
               </p>
               <p className="text-text-secondary text-sm leading-relaxed font-body mt-3">
                 <strong className="text-text-primary">Sources:</strong> KenPom,
-                TeamRankings.com, Nate Silver COOPER/Silver Bulletin, ESPN BPI, Jay
-                Bilas (ESPN), CBS SportsLine, Covers.com, DraftKings, FanDuel,
-                RotoWire, SI.com, SportsBettingDime, FOX Sports, Bleacher Report,
-                Yahoo Sports, NBC Sports, The Ringer, Neil Paine Substack.
+                TeamRankings.com, Nate Silver COOPER/Silver Bulletin, ESPN BPI,
+                Jay Bilas (ESPN), CBS SportsLine, Covers.com, DraftKings,
+                FanDuel, RotoWire, SI.com, SportsBettingDime, FOX Sports,
+                Bleacher Report, Yahoo Sports, NBC Sports, The Ringer, Neil
+                Paine Substack.
               </p>
             </GlassCard>
           </section>

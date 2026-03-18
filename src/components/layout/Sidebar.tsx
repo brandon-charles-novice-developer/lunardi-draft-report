@@ -6,6 +6,7 @@ interface NavItem {
 
 const NAV_ITEMS: readonly NavItem[] = [
   { id: 'overview', label: 'Overview' },
+  { id: 'my-roster', label: 'My Roster' },
   { id: 'manager-10', label: 'Manager #10', rank: 10 },
   { id: 'manager-9', label: 'Manager #9', rank: 9 },
   { id: 'manager-8', label: 'Manager #8', rank: 8 },
