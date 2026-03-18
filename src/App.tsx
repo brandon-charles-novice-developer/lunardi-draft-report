@@ -1,8 +1,4 @@
-import { useCallback, useMemo } from 'react';
-import useScrollSpy from './hooks/useScrollSpy';
-import useMediaQuery from './hooks/useMediaQuery';
-import Sidebar from './components/layout/Sidebar';
-import MobileNav from './components/layout/MobileNav';
+import { useCallback } from 'react';
 import HeroSection from './components/hero/HeroSection';
 import MyRosterSpotlight from './components/roster/MyRosterSpotlight';
 import LeaderboardTable from './components/rankings/LeaderboardTable';
@@ -22,23 +18,6 @@ function App() {
   const myRoster = managers.find((m) => m.rank === 1)!;
   const opponents = managers.filter((m) => m.rank !== 1);
 
-  const sectionIds = useMemo(
-    () => [
-      'overview',
-      'my-roster',
-      'leaderboard',
-      ...managers.map((m) => m.cardId),
-      'final-four',
-      'conflicts',
-      'projections',
-      'injuries',
-    ],
-    []
-  );
-
-  const activeSection = useScrollSpy(sectionIds);
-  const isMobile = useMediaQuery('(max-width: 767px)');
-
   const handleNavigate = useCallback((id: string) => {
     const el = document.getElementById(id);
     if (el) {
@@ -48,14 +27,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-bg-primary">
-      {!isMobile && (
-        <Sidebar activeSection={activeSection} onNavigate={handleNavigate} />
-      )}
-      {isMobile && (
-        <MobileNav activeSection={activeSection} onNavigate={handleNavigate} />
-      )}
-
-      <main className={`${isMobile ? 'pb-20' : 'ml-[240px]'}`}>
+      <main>
         <HeroSection />
 
         {/* Brandon's Roster — THE CENTERPIECE */}
@@ -70,7 +42,8 @@ function App() {
               THE COMPETITION
             </h2>
             <p className="text-text-secondary font-body italic">
-              How the other 9 rosters stack up — ranked and roasted by Homoe Lunardi
+              How the other 9 rosters stack up — ranked and roasted by Homoe
+              Lunardi
             </p>
           </div>
 
@@ -144,10 +117,7 @@ function App() {
                 </strong>{' '}
                 Expected Games = Team Expected Wins + 1. Expected wins sourced
                 from TeamRankings 10K-simulation composite blended with Nate
-                Silver COOPER model and KenPom qualitative adjustments. Momentum
-                flags (HOT, CONSISTENT) noted qualitatively. Injury deductions
-                applied where status is QUESTIONABLE or worse. Head-to-head
-                conflicts mapped across all four regions.
+                Silver COOPER model and KenPom qualitative adjustments.
               </p>
               <p className="text-text-secondary text-sm leading-relaxed font-body mt-3">
                 <strong className="text-text-primary">Sources:</strong> KenPom,
