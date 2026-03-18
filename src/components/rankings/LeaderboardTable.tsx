@@ -10,11 +10,17 @@ interface LeaderboardTableProps {
 function LeaderboardTable({ managers, onSelectManager }: LeaderboardTableProps) {
   return (
     <section id="leaderboard" className="px-4 md:px-8 py-12">
-      <h2 className="gradient-text font-display text-3xl md:text-4xl font-bold tracking-tight mb-8">
+      <h2 className="gradient-text font-display text-3xl md:text-4xl font-bold tracking-tight mb-4">
         POWER RANKINGS
       </h2>
 
-      <GlassCard level="medium" className="overflow-x-auto">
+      <p className="font-body text-text-secondary text-base md:text-lg italic mb-8 max-w-3xl">
+        The final standings. Every roster scrutinized. Every pick graded. Some
+        of you should be proud. Most of you should not.
+      </p>
+
+      {/* Desktop Table */}
+      <GlassCard level="medium" className="hidden md:block overflow-x-auto">
         <table className="w-full text-left">
           <thead>
             <tr className="border-b border-white/10">
@@ -64,7 +70,7 @@ function LeaderboardTable({ managers, onSelectManager }: LeaderboardTableProps) 
                 </td>
                 <td className="px-4 py-3 text-center font-body text-sm">
                   {manager.rosterComplete ? (
-                    <span className="text-grade-a">COMPLETE \u2705</span>
+                    <span className="text-grade-a">COMPLETE</span>
                   ) : (
                     <span className="text-text-secondary">
                       {manager.roster.length}/8
@@ -76,6 +82,47 @@ function LeaderboardTable({ managers, onSelectManager }: LeaderboardTableProps) 
           </tbody>
         </table>
       </GlassCard>
+
+      {/* Mobile Card Layout */}
+      <div className="md:hidden space-y-3">
+        {managers.map((manager) => (
+          <GlassCard
+            key={manager.cardId}
+            level="medium"
+            className="p-4 cursor-pointer glass-hover transition-all duration-200"
+            onClick={() => onSelectManager(manager.cardId)}
+          >
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-3">
+                <span
+                  className="font-display text-2xl font-bold leading-none"
+                  style={{ color: manager.gradeColor }}
+                >
+                  #{manager.rank}
+                </span>
+                <span className="font-body text-text-primary text-base font-semibold">
+                  {manager.name}
+                </span>
+              </div>
+              <GradeBadge grade={manager.grade} color={manager.gradeColor} />
+            </div>
+            <div className="flex items-center gap-4 text-sm">
+              <div>
+                <span className="text-text-secondary font-body">PTP </span>
+                <span className="font-mono text-text-primary font-semibold">
+                  {manager.ptp.toFixed(1)}
+                </span>
+              </div>
+              <div>
+                <span className="text-text-secondary font-body">PPG </span>
+                <span className="font-mono text-text-primary font-semibold">
+                  {manager.avgPpg.toFixed(1)}
+                </span>
+              </div>
+            </div>
+          </GlassCard>
+        ))}
+      </div>
     </section>
   );
 }

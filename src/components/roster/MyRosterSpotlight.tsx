@@ -21,7 +21,7 @@ function MyRosterSpotlight({ manager }: MyRosterSpotlightProps) {
   const teams = new Set(manager.roster.map((p) => p.team)).size;
 
   return (
-    <section id="my-roster" className="py-16 px-4 md:px-8">
+    <section id="my-roster" className="py-16 md:py-24 px-4 md:px-8">
       <motion.div
         className="max-w-5xl mx-auto"
         initial={{ opacity: 0, y: 30 }}
@@ -30,7 +30,7 @@ function MyRosterSpotlight({ manager }: MyRosterSpotlightProps) {
         transition={{ duration: 0.7 }}
       >
         {/* Section Header */}
-        <div className="text-center mb-10">
+        <div className="text-center mb-6">
           <h2 className="font-display text-4xl md:text-5xl gradient-text tracking-tight mb-2">
             THE NYE PORTFOLIO
           </h2>
@@ -39,6 +39,25 @@ function MyRosterSpotlight({ manager }: MyRosterSpotlightProps) {
             that won the draft.
           </p>
         </div>
+
+        {/* Lunardi Intro */}
+        <motion.div
+          className="max-w-3xl mx-auto mb-10"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2, duration: 0.6 }}
+        >
+          <p className="font-body text-text-secondary text-base md:text-lg leading-7 md:leading-8 text-center italic">
+            We need to talk about what just happened. Eight picks. Eight teams.
+            Eight healthy players. Zero overlap. Four HOT flags. Three
+            expert-consensus picks. This is not a fantasy roster. This is an{' '}
+            <span className="text-accent-pink font-semibold not-italic">
+              INVESTMENT THESIS
+            </span>
+            .
+          </p>
+        </motion.div>
 
         {/* Stats Row */}
         <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-8">
@@ -68,14 +87,14 @@ function MyRosterSpotlight({ manager }: MyRosterSpotlightProps) {
             >
               <GlassCard
                 level="medium"
-                className="p-5 hover:border-white/35 transition-all duration-200"
+                className="p-4 md:p-5 hover:border-white/35 transition-all duration-200"
               >
                 <div className="flex items-start justify-between mb-3">
-                  <div>
-                    <h3 className="font-display text-xl text-text-primary tracking-tight">
+                  <div className="min-w-0 flex-1 mr-3">
+                    <h3 className="font-display text-lg md:text-xl text-text-primary tracking-tight truncate">
                       {player.name}
                     </h3>
-                    <p className="text-text-secondary text-sm font-body">
+                    <p className="text-text-secondary text-sm font-body truncate">
                       {player.team}{' '}
                       <span className="text-accent-purple">
                         ({player.seed}-seed)
@@ -83,7 +102,7 @@ function MyRosterSpotlight({ manager }: MyRosterSpotlightProps) {
                       &middot; {player.region}
                     </p>
                   </div>
-                  <div className="text-right">
+                  <div className="text-right shrink-0">
                     <p className="font-mono text-2xl text-accent-pink font-bold">
                       {player.ppg}
                     </p>
@@ -91,7 +110,7 @@ function MyRosterSpotlight({ manager }: MyRosterSpotlightProps) {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4 text-sm">
+                <div className="flex items-center gap-3 md:gap-4 text-sm flex-wrap">
                   <div>
                     <span className="text-text-secondary font-body">
                       Exp Games:{' '}
@@ -136,7 +155,7 @@ function MyRosterSpotlight({ manager }: MyRosterSpotlightProps) {
           viewport={{ once: true }}
           transition={{ delay: 0.5, duration: 0.6 }}
         >
-          <GlassCard level="heavy" className="p-6">
+          <GlassCard level="heavy" className="p-4 md:p-6">
             <h3 className="font-display text-lg text-accent-purple mb-3">
               ROSTER ARCHITECTURE
             </h3>

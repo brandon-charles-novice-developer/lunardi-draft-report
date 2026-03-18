@@ -33,8 +33,13 @@ function App() {
         {/* Brandon's Roster — THE CENTERPIECE */}
         <MyRosterSpotlight manager={myRoster} />
 
-        <div className="max-w-5xl mx-auto px-4 md:px-8 py-12 space-y-12">
+        <div className="max-w-4xl mx-auto px-4 md:px-8 py-12 space-y-16">
           <SectionDivider />
+
+          {/* Transition Text */}
+          <p className="font-body text-text-secondary text-base md:text-lg italic text-center max-w-2xl mx-auto leading-7">
+            Now. Let us discuss the rest of you.
+          </p>
 
           {/* Competition Section Header */}
           <div className="text-center">
@@ -67,6 +72,14 @@ function App() {
 
           <SectionDivider />
 
+          {/* Transition Text */}
+          <p className="font-body text-text-secondary text-base md:text-lg italic text-center max-w-3xl mx-auto leading-7">
+            When the dust settles and the bracket breaks open, four rosters will
+            still be standing. Here is who I believe — and I use that word
+            deliberately, because belief is all we have left — will be competing
+            for the crown.
+          </p>
+
           {/* Final Four of Fantasy */}
           <section id="final-four" className="space-y-6">
             <h2 className="font-display text-3xl md:text-4xl gradient-text tracking-tight">
@@ -98,6 +111,12 @@ function App() {
 
           <SectionDivider />
 
+          {/* Transition Text */}
+          <p className="font-body text-text-secondary text-base md:text-lg italic text-center max-w-3xl mx-auto leading-7">
+            For the spreadsheet enthusiasts, the pencil-pushers, and Alex Magged
+            specifically — here is your data.
+          </p>
+
           {/* Appendix */}
           <section className="space-y-10">
             <h2 className="font-display text-3xl md:text-4xl gradient-text tracking-tight">
@@ -113,7 +132,7 @@ function App() {
               </h3>
               <p className="text-text-secondary text-sm leading-relaxed font-body">
                 <strong className="text-text-primary">
-                  PTP = PPG × Expected Games Played.
+                  PTP = PPG x Expected Games Played.
                 </strong>{' '}
                 Expected Games = Team Expected Wins + 1. Expected wins sourced
                 from TeamRankings 10K-simulation composite blended with Nate

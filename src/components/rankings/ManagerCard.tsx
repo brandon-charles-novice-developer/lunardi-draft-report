@@ -18,7 +18,7 @@ interface CollapsibleProps {
 }
 
 function Collapsible({ icon, title, content }: CollapsibleProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
   if (!content || content.trim().length === 0) return null;
 
@@ -68,19 +68,19 @@ function ManagerCard({ manager }: ManagerCardProps) {
         className="overflow-hidden"
       >
         <div
-          className="border-l-[3px] p-6"
+          className="border-l-[3px] p-4 md:p-6"
           style={{ borderLeftColor: manager.gradeColor }}
         >
           {/* Header */}
-          <div className="flex flex-wrap items-center gap-4 mb-4">
+          <div className="flex flex-wrap items-center gap-3 md:gap-4 mb-4">
             <span
-              className="font-display text-6xl font-bold leading-none"
+              className="font-display text-4xl md:text-6xl font-bold leading-none"
               style={{ color: manager.gradeColor }}
             >
               #{manager.rank}
             </span>
             <div className="flex-1 min-w-0">
-              <h3 className="font-display text-3xl font-bold text-text-primary truncate">
+              <h3 className="font-display text-2xl md:text-3xl font-bold text-text-primary truncate">
                 {manager.name}
               </h3>
               <p className="font-body text-text-secondary text-sm mt-1">
@@ -102,25 +102,30 @@ function ManagerCard({ manager }: ManagerCardProps) {
 
           {/* Collapsible Sections */}
           <Collapsible
-            icon="\u{1F4CD}"
+            icon={"\u{1F4CD}"}
             title="Path Analysis"
             content={manager.pathAnalysis}
           />
           <Collapsible
-            icon="\u2694\uFE0F"
+            icon={"\u2694\uFE0F"}
             title="Head-to-Head Conflicts"
             content={manager.headToHead}
           />
           <Collapsible
-            icon="\u{1F3E5}"
+            icon={"\u{1F3E5}"}
             title="Injury Concerns"
             content={manager.injuryConcerns}
           />
 
           {/* Commentary */}
           {manager.commentary && (
-            <div className="border-t border-white/10 pt-4 mt-2 px-4">
-              <Commentary text={manager.commentary} />
+            <div className="border-t border-white/10 pt-6 mt-2 px-2 md:px-4">
+              <h4 className="font-display text-accent-pink text-sm uppercase tracking-wider mb-4">
+                HOMOE LUNARDI'S TAKE
+              </h4>
+              <div className="max-w-3xl mx-auto">
+                <Commentary text={manager.commentary} />
+              </div>
             </div>
           )}
         </div>
